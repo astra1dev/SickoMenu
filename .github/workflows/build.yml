@@ -1,4 +1,3 @@
-#credit goes to https://github.com/cpguy5089/AmongUsMenu_Ghost/blob/main/.github/workflows/build.yml
 name: Build Project
 
 on:
@@ -14,14 +13,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v3
       
       - name: Build Release
         shell: bash
-        run: '"C:/Program Files/Microsoft Visual Studio/2022/Enterprise/Msbuild/Current/Bin/MSBuild.exe" -property:Configuration=Release -property:PlatformToolset=v143 -property:Platform=x86'
+        run: MSBuild.exe -property:Configuration=Release -property:PlatformToolset=v143 -property:Platform=x86
         
       - name: Build Release_Version
         shell: bash
-        run: '"C:/Program Files/Microsoft Visual Studio/2022/Enterprise/Msbuild/Current/Bin/MSBuild.exe" -property:Configuration=Release_Version -property:PlatformToolset=v143 -property:Platform=x86'
+        run: MSBuild.exe -property:Configuration=Release_Version -property:PlatformToolset=v143 -property:Platform=x86
         
       - name: Package Release Builds
         shell: cmd
@@ -41,14 +43,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v3
       
       - name: Build Release
         shell: bash
-        run: '"C:/Program Files/Microsoft Visual Studio/2022/Enterprise/Msbuild/Current/Bin/MSBuild.exe" -property:Configuration=Release -property:PlatformToolset=v143 -property:Platform=x64'
+        run: MSBuild.exe -property:Configuration=Release -property:PlatformToolset=v143 -property:Platform=x64
         
       - name: Build Release_Version
         shell: bash
-        run: '"C:/Program Files/Microsoft Visual Studio/2022/Enterprise/Msbuild/Current/Bin/MSBuild.exe" -property:Configuration=Release_Version -property:PlatformToolset=v143 -property:Platform=x64'
+        run: MSBuild.exe -property:Configuration=Release_Version -property:PlatformToolset=v143 -property:Platform=x64
         
       - name: Package Release Builds
         shell: cmd
@@ -68,14 +73,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v3
       
       - name: Build Debug
         shell: bash
-        run: '"C:/Program Files/Microsoft Visual Studio/2022/Enterprise/Msbuild/Current/Bin/MSBuild.exe" -property:Configuration=Debug -property:PlatformToolset=v143 -property:Platform=x86'
+        run: MSBuild.exe -property:Configuration=Debug -property:PlatformToolset=v143 -property:Platform=x86
         
       - name: Build Debug_Version
         shell: bash
-        run: '"C:/Program Files/Microsoft Visual Studio/2022/Enterprise/Msbuild/Current/Bin/MSBuild.exe" -property:Configuration=Debug_Version -property:PlatformToolset=v143 -property:Platform=x86'
+        run: MSBuild.exe -property:Configuration=Debug_Version -property:PlatformToolset=v143 -property:Platform=x86
         
       - name: Package Debug Builds
         shell: cmd
@@ -95,14 +103,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v3
       
       - name: Build Debug
         shell: bash
-        run: '"C:/Program Files/Microsoft Visual Studio/2022/Enterprise/Msbuild/Current/Bin/MSBuild.exe" -property:Configuration=Debug -property:PlatformToolset=v143 -property:Platform=x64'
+        run: MSBuild.exe -property:Configuration=Debug -property:PlatformToolset=v143 -property:Platform=x64
         
       - name: Build Debug_Version
         shell: bash
-        run: '"C:/Program Files/Microsoft Visual Studio/2022/Enterprise/Msbuild/Current/Bin/MSBuild.exe" -property:Configuration=Debug_Version -property:PlatformToolset=v143 -property:Platform=x64'
+        run: MSBuild.exe -property:Configuration=Debug_Version -property:PlatformToolset=v143 -property:Platform=x64
         
       - name: Package Debug Builds
         shell: cmd
