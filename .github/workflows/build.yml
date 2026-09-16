@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
   release:
     types: [published]
-  #push:
+  push:
     #branches: [ "main" ]
   
 jobs:
