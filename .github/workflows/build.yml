@@ -142,6 +142,7 @@ jobs:
         with:
           tag_name: latest
           prerelease: false
+          generate_release_notes: true
           files: |
             Release_x86_SteamItch/Release_x86_SteamItch.zip
             Release_x64_EpicXboxMS/Release_x64_EpicXboxMS.zip
