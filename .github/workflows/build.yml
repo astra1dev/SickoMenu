@@ -31,7 +31,7 @@ jobs:
           tar -caf Release_x86_SteamItch.zip SickoMenu.dll version.dll LICENSE
         
       - name: Upload Release Artifact
-        uses: actions/upload-artifact@v4.2.0
+        uses: actions/upload-artifact@v7
         with:
           name: Release_x86_SteamItch
           path: Release_x86_SteamItch.zip
@@ -58,7 +58,7 @@ jobs:
           tar -caf Release_x64_EpicXboxMS.zip SickoMenu.dll version.dll LICENSE
         
       - name: Upload Release Artifact
-        uses: actions/upload-artifact@v4.2.0
+        uses: actions/upload-artifact@v7
         with:
           name: Release_x64_EpicXboxMS
           path: Release_x64_EpicXboxMS.zip
@@ -85,7 +85,7 @@ jobs:
           tar -caf Debug_x86_SteamItch.zip SickoMenu.dll version.dll LICENSE
         
       - name: Upload Debug Artifact
-        uses: actions/upload-artifact@v4.2.0
+        uses: actions/upload-artifact@v7
         with:
           name: Debug_x86_SteamItch
           path: Debug_x86_SteamItch.zip
@@ -112,7 +112,7 @@ jobs:
           tar -caf Debug_x64_EpicXboxMS.zip SickoMenu.dll version.dll LICENSE
         
       - name: Upload Debug Artifact
-        uses: actions/upload-artifact@v4.2.0
+        uses: actions/upload-artifact@v7
         with:
           name: Debug_x64_EpicXboxMS
           path: Debug_x64_EpicXboxMS.zip
