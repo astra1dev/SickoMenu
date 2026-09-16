@@ -8,129 +8,65 @@ on:
     #branches: [ "main" ]
   
 jobs:
-  Build_Release_x86:
+  build:
+    name: Build ${{ matrix.name }}
     runs-on: windows-2025
+
+    strategy:
+      fail-fast: false # Don't cancel other jobs in the matrix if one job fails
+      matrix:
+        include:
+          - name: Release_x86_SteamItch
+            platform: x86
+            configuration: Release
+            path: Release
+
+          - name: Release_x64_EpicXboxMS
+            platform: x64
+            configuration: Release
+            path: x64\Release
+
+          - name: Debug_x86_SteamItch
+            platform: x86
+            configuration: Debug
+            path: Debug
+
+          - name: Debug_x64_EpicXboxMS
+            platform: x64
+            configuration: Debug
+            path: x64\Debug
+
     steps:
       - name: Checkout
         uses: actions/checkout@v7
 
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v3
-      
-      - name: Build Release
-        shell: bash
-        run: MSBuild.exe -property:Configuration=Release -property:PlatformToolset=v143 -property:Platform=x86
-        
-      - name: Build Release_Version
-        shell: bash
-        run: MSBuild.exe -property:Configuration=Release_Version -property:PlatformToolset=v143 -property:Platform=x86
-        
-      - name: Package Release Builds
-        shell: cmd
-        run: |
-          move /y Release\SickoMenu.dll SickoMenu.dll
-          move /y Release_Version\version.dll version.dll
-          tar -caf Release_x86_SteamItch.zip SickoMenu.dll version.dll LICENSE
-        
-      - name: Upload Release Artifact
-        uses: actions/upload-artifact@v7
-        with:
-          name: Release_x86_SteamItch
-          path: Release_x86_SteamItch.zip
-          
-  Build_Release_x64:
-    runs-on: windows-2025
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
 
-      - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v3
-      
-      - name: Build Release
+      - name: Build SickoMenu.dll
         shell: bash
-        run: MSBuild.exe -property:Configuration=Release -property:PlatformToolset=v143 -property:Platform=x64
-        
-      - name: Build Release_Version
-        shell: bash
-        run: MSBuild.exe -property:Configuration=Release_Version -property:PlatformToolset=v143 -property:Platform=x64
-        
-      - name: Package Release Builds
-        shell: cmd
-        run: |
-          move /y x64\Release\SickoMenu.dll SickoMenu.dll
-          move /y x64\Release_Version\version.dll version.dll
-          tar -caf Release_x64_EpicXboxMS.zip SickoMenu.dll version.dll LICENSE
-        
-      - name: Upload Release Artifact
-        uses: actions/upload-artifact@v7
-        with:
-          name: Release_x64_EpicXboxMS
-          path: Release_x64_EpicXboxMS.zip
-          
-  Build_Debug_x86:
-    runs-on: windows-2025
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
+        run: MSBuild.exe -property:Configuration=${{ matrix.configuration }} -property:PlatformToolset=v143 -property:Platform=${{ matrix.platform }}
 
-      - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v3
-      
-      - name: Build Debug
+      - name: Build version.dll
         shell: bash
-        run: MSBuild.exe -property:Configuration=Debug -property:PlatformToolset=v143 -property:Platform=x86
-        
-      - name: Build Debug_Version
-        shell: bash
-        run: MSBuild.exe -property:Configuration=Debug_Version -property:PlatformToolset=v143 -property:Platform=x86
-        
-      - name: Package Debug Builds
-        shell: cmd
-        run: |
-          move /y Debug\SickoMenu.dll SickoMenu.dll
-          move /y Debug_Version\version.dll version.dll
-          tar -caf Debug_x86_SteamItch.zip SickoMenu.dll version.dll LICENSE
-        
-      - name: Upload Debug Artifact
-        uses: actions/upload-artifact@v7
-        with:
-          name: Debug_x86_SteamItch
-          path: Debug_x86_SteamItch.zip
-          
-  Build_Debug_x64:
-    runs-on: windows-2025
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
+        run: MSBuild.exe -property:Configuration=${{ matrix.configuration }}_Version -property:PlatformToolset=v143 -property:Platform=${{ matrix.platform }}
 
-      - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v3
-      
-      - name: Build Debug
-        shell: bash
-        run: MSBuild.exe -property:Configuration=Debug -property:PlatformToolset=v143 -property:Platform=x64
-        
-      - name: Build Debug_Version
-        shell: bash
-        run: MSBuild.exe -property:Configuration=Debug_Version -property:PlatformToolset=v143 -property:Platform=x64
-        
-      - name: Package Debug Builds
+      - name: Package
         shell: cmd
         run: |
-          move /y x64\Debug\SickoMenu.dll SickoMenu.dll
-          move /y x64\Debug_Version\version.dll version.dll
-          tar -caf Debug_x64_EpicXboxMS.zip SickoMenu.dll version.dll LICENSE
-        
-      - name: Upload Debug Artifact
+          move /y "${{ matrix.path }}\SickoMenu.dll" SickoMenu.dll
+          move /y "${{ matrix.path }}_Version\version.dll" version.dll
+          tar -caf "${{ matrix.name }}.zip" SickoMenu.dll version.dll LICENSE
+
+      - name: Upload artifact
         uses: actions/upload-artifact@v7
         with:
-          name: Debug_x64_EpicXboxMS
-          path: Debug_x64_EpicXboxMS.zip
-          
+          name: ${{ matrix.name }}
+          path: ${{ matrix.name }}.zip
+
   AutoRelease:
     runs-on: windows-2025
-    needs: [Build_Release_x86, Build_Release_x64, Build_Debug_x86, Build_Debug_x64]
+    needs: build
     permissions:
       contents: write
     steps:
