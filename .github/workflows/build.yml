@@ -131,54 +131,19 @@ jobs:
   AutoRelease:
     runs-on: windows-2025
     needs: [Build_Release_x86, Build_Release_x64, Build_Debug_x86, Build_Debug_x64]
+    permissions:
+      contents: write
     steps:
-#      - name: Parse tag semver
-#        uses: booxmedialtd/ws-action-parse-semver@3576f3a20a39f8752fe0d8195f5ed384090285dc
-#        id: semver_parser
-#        with:
-#          input_string: ${{ github.ref }}
-#          version_extractor_regex: '\/v(.*)$'
-          
-      # please keep this for an adjustment period, will help diagnose any issues
-#      - name: Debug semver
-#        run: |
-#            echo 'major: ${{ steps.semver_parser.outputs.major }}'
-#            echo 'minor: ${{ steps.semver_parser.outputs.minor }}'
-#            echo 'patch: ${{ steps.semver_parser.outputs.patch }}'
-#            echo 'feature (is pre-release?): ${{ steps.semver_parser.outputs.prerelease }}'
-#            echo 'feature ver: ${{ steps.semver_parser.outputs.build }}'
-#            echo 'full: ${{ steps.semver_parser.outputs.fullversion }}'
-#            echo 'is pre-release: ${{ steps.semver_parser.outputs.prerelease != 0 }}'
-      
-      - name: Download Release Artifact (x86)
-        uses: actions/download-artifact@v4.1.7
-        with:
-          name: Release_x86_SteamItch
-      
-      - name: Download Release Artifact (x64)
-        uses: actions/download-artifact@v4.1.7
-        with:
-          name: Release_x64_EpicXboxMS
-      
-      - name: Download Debug Artifact (x86)
-        uses: actions/download-artifact@v4.1.7
-        with:
-          name: Debug_x86_SteamItch
-      
-      - name: Download Debug Artifact (x64)
-        uses: actions/download-artifact@v4.1.7
-        with:
-          name: Debug_x64_EpicXboxMS
+      - name: Download build artifacts
+        uses: actions/download-artifact@v8
       
       - name: Automatic Releases
-        uses: marvinpinto/action-automatic-releases@latest #maybe this fixed auto release versioning?
-        id: "automatic_releases"
+        uses: softprops/action-gh-release@v3
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}" #this is gonna give me a stroke
-          automatic_release_tag: "latest"
+          tag_name: latest
           prerelease: false
           files: |
-            Release_x86_SteamItch.zip
-            Release_x64_EpicXboxMS.zip
-            Debug_x86_SteamItch.zip
-            Debug_x64_EpicXboxMS.zip
+            Release_x86_SteamItch/Release_x86_SteamItch.zip
+            Release_x64_EpicXboxMS/Release_x64_EpicXboxMS.zip
+            Debug_x86_SteamItch/Debug_x86_SteamItch.zip
+            Debug_x64_EpicXboxMS/Debug_x64_EpicXboxMS.zip
