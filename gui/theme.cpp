@@ -88,7 +88,7 @@ void ApplyTheme()
 	style.Colors[ImGuiCol_PlotHistogram] = IMGUI_TEXT(0.63f);
 	style.Colors[ImGuiCol_PlotHistogramHovered] = MED(1.00f);
 	style.Colors[ImGuiCol_TextSelectedBg] = MED(0.43f);
-	style.Colors[ImGuiCol_ModalWindowDarkening] = BG(0.230f, 0.73f);
+	style.Colors[ImGuiCol_ModalWindowDimBg] = BG(0.230f, 0.73f);
 
 	if (State.LightMode) {
 		style.Colors[ImGuiCol_WindowBg] = BG(0.95f);
@@ -108,7 +108,7 @@ void ApplyTheme()
 		style.Colors[ImGuiCol_ResizeGrip] = BG(0.9f, 0.1f);
 		style.Colors[ImGuiCol_ResizeGripHovered] = MED(0.8f);
 		style.Colors[ImGuiCol_ResizeGripActive] = MED(0.9f);
-		style.Colors[ImGuiCol_ModalWindowDarkening] = BG(0.9f, 0.7f);
+		style.Colors[ImGuiCol_ModalWindowDimBg] = BG(0.9f, 0.7f);
 	}
 
 	style.WindowPadding = ImVec2(6, 4);
